@@ -1,60 +1,41 @@
-const sentence = 'When you play the game of thrones, you win or you die'
-const stoparr = ['die', 'play']
+//Реализуйте и экспортируйте по умолчанию функцию, 
+//которая заменяет каждое вхождение указанных слов в предложении на последовательность $#%! 
+// и возвращает полученную строку. Аргументы: Текст и [Набор стоп слов]
+
+//моё решение
+export const progon = (text, stop) => {
+    let result = []
+    for (const word of text) {
+        (word === stop) ? result.push('$#%!') : result.push(word)
+    }
+    return result
+}
 
 const makeCensored = (sentence, stoparr) => {
     
     const separator = ' '
-    const sentenceArr = sentence.split(separator)
+    let sentenceArr = sentence.split(separator)
     
-    let result = []
-    const krakozybra = '$#%!'
-    
-    for (const word of sentenceArr) {
-        (word === includes(stoparr)) ? result = `${result}${word}`: result = `${result}${krakozybra}`
-    }
-    return result.join(separator)
+    for (const stopword of stoparr) {
+        
+        sentenceArr = progon(sentenceArr, stopword)
+        
+    } 
+    return sentenceArr.join(separator)
+}
+export default makeCensored
+
+//Решение учителя
+const makeCensored = (text, stopWords) => {
+  const words = text.split(' ')
+
+  const result = []
+  for (const word of words) {
+    const newWord = stopWords.includes(word) ? '$#%!' : word
+    result.push(newWord)
+  }
+
+  return result.join(' ')
 }
 
-console.log(makeCensored(sentence, stoparr))
-
-// версия2
-
-const makeCensored = (sentence, stoparr) => {
-    
-    const separator = ' '
-    const sentenceArr = sentence.split(separator)
-    
-//    console.log(sentenceArr)
-    
-    let result = []
-    const krakozybra = '$#%!'
-    
-    for (const word of sentenceArr) {
-        (word.includes(stoparr[0]) === false) ? result.push(word) : result.push(krakozybra)
-        console.log(result)
-    }
-
-    return result.join(separator)
-}
-
-console.log(makeCensored(sentence, stoparr))
-
-const makeCensored = (sentence, stoparr) => {
-    
-    const separator = ' '
-    const sentenceArr = sentence.split(separator)
-    
-    for (const stopWord of stoparr) {
-        let stop = stopWord
-    }
-    
-    let result = []
-    
-    for (const word of sentenceArr) {
-        (word.includes(stoparr[1]) === false) ? result.push(word) : result.push('$#%!')
-    }
-
-    return result.join(separator)
-}
-
-console.log(makeCensored(sentence, stoparr))
+export default makeCensored
