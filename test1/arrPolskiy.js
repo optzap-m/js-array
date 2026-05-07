@@ -1,52 +1,70 @@
+// Moё решение
 const calcInPolishNotation = (arr) => {
     let newArr = []
-    let operand = newArr.pop()
-    let result = operand
-    
-    for (let i = 0; i < arr.length; i += 1) {
-        if (arr[i] === '+') {
-            result = operand + result
-        }
-        else if (arr[i] === '-') {
-            result = operand - result
-        }
-        else if (arr[i] === '*') {
-            result = operand * result
-        }
-        else if (arr[i] === '/') {
-            result = operand / result
-        }
-        else {
-            newArr = newArr.push(arr[i])
-        }
-    }
-    return result
-}
-
-console.log(calcInPolishNotation([1, 2, '+', 4, '*', 3, '+'])) // 15
-//console.log(calcInPolishNotation([7, 2, 3, '*', '-'])) // 1
-
-// ЧТО СОВЕТУЕТ ИИ
-Метод `Array.prototype.push()` возвращает новую длину массива, а не сам массив. Когда вы присваиваете эту длину (число) переменной `newArr`, `newArr` перестает быть массивом, поэтому последующие вызовы `.push()` приводят к ошибке TypeError. Кроме того, была неправильно реализована логика обратной польской записи.
-
-const calcInPolishNotation = (arr) => {
-    let stack = []
     
     for (let i = 0; i < arr.length; i += 1) {
         if (typeof arr[i] === 'number') {
-            stack.push(arr[i])
+            newArr.push(arr[i])
         } else {
-            let b = stack.pop()
-            let a = stack.pop()
+            let x = newArr.pop()
+            let y = newArr.pop()
             
-            if (arr[i] === '+') stack.push(a + b)
-            else if (arr[i] === '-') stack.push(a - b)
-            else if (arr[i] === '*') stack.push(a * b)
-            else if (arr[i] === '/') stack.push(a / b)
+            if (arr[i] === '+') newArr.push(y + x)
+            else if (arr[i] === '-') newArr.push(y - x)
+            else if (arr[i] === '*') newArr.push(y * x)
+            else if (arr[i] === '/') {
+                if (x === 0) {
+                    return null
+                }
+                newArr.push(y / x)
+            }
         }
     }
-    return stack[0]
+    return newArr[0]
 }
+
+export default calcInPolishNotation
 
 console.log(calcInPolishNotation([1, 2, '+', 4, '*', 3, '+'])) // 15
 console.log(calcInPolishNotation([7, 2, 3, '*', '-'])) // 1
+
+//Решение учителя
+
+const calcInPolishNotation = (array) => {
+  const stack = []
+  const operators = ['*', '/', '+', '-']
+
+  for (const value of array) {
+    if (!operators.includes(value)) {
+      stack.push(value)
+      continue
+    }
+
+    const b = stack.pop()
+    const a = stack.pop()
+    let result
+
+    switch (value) {
+      case '*':
+        result = a * b
+        break
+      case '/':
+        result = b === 0 ? null : a / b
+        break
+      case '+':
+        result = a + b
+        break
+      case '-':
+        result = a - b
+        break
+      default:
+        break
+    }
+    if (result === null) {
+      return result
+    }
+    stack.push(result)
+  }
+  return stack.pop()
+}
+export default calcInPolishNotation
